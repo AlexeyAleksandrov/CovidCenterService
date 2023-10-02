@@ -23,7 +23,7 @@ public class IssuedInvoice
     @Lob
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private StatusType status;
+    private IssuedInvoiceStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "member", nullable = false)
