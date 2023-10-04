@@ -1,4 +1,4 @@
-package ru.alexeyaleksandrov.covidcenterservice.models;
+package ru.alexeyaleksandrov.covidcenterservice.models.offices;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,7 +9,7 @@ import lombok.Data;
 @Entity
 @Table(name = "services")
 @Data
-public class Service
+public class MedicalUtility
 {
     @Id
     @Column(name = "code", nullable = false)

@@ -1,4 +1,4 @@
-package ru.alexeyaleksandrov.covidcenterservice.models;
+package ru.alexeyaleksandrov.covidcenterservice.models.insurancepolicy;
 
 import jakarta.persistence.*;
 import lombok.Data;

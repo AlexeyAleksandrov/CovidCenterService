@@ -1,7 +1,8 @@
-package ru.alexeyaleksandrov.covidcenterservice.models;
+package ru.alexeyaleksandrov.covidcenterservice.models.users;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import ru.alexeyaleksandrov.covidcenterservice.models.insurancepolicy.InsurancePolicy;
 
 import java.time.LocalDate;
 

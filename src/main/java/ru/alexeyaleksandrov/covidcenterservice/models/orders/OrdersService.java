@@ -1,7 +1,10 @@
-package ru.alexeyaleksandrov.covidcenterservice.models;
+package ru.alexeyaleksandrov.covidcenterservice.models.orders;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import ru.alexeyaleksandrov.covidcenterservice.models.offices.MedicalUtility;
+import ru.alexeyaleksandrov.covidcenterservice.models.users.Member;
+import ru.alexeyaleksandrov.covidcenterservice.models.analyzer.AnalyzerResult;
 
 @Entity
 @Table(name = "orders_services")
@@ -19,7 +22,7 @@ public class OrdersService
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "service_id", nullable = false)
-    private Service service;
+    private MedicalUtility medicalUtility;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
