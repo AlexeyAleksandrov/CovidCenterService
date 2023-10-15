@@ -2,10 +2,9 @@ package ru.alexeyaleksandrov.covidcenterservice.models.users;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import ru.alexeyaleksandrov.covidcenterservice.models.users.control.Role;
+import ru.alexeyaleksandrov.covidcenterservice.models.services.MedicalService;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Table(name = "members")
@@ -17,8 +16,8 @@ public class Member
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
 
     @Column(name = "login", nullable = false, length = 50)
     private String login;
@@ -29,19 +28,13 @@ public class Member
     @Column(name = "ip", length = 15)
     private String ip;
 
-    @Column(name = "last_enter_date")
-    private LocalDate lastEnterDate;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "role", nullable = false)
     private Role role;
 
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
-
-    @Column(name = "patronymic")
-    private String patronymic;
-
     @Column(name = "last_enter_time")
-    private LocalTime lastEnterTime;
+    private Long lastEnterTime;
+
+    @ManyToMany
+    private List<MedicalService> allowServices;
 }

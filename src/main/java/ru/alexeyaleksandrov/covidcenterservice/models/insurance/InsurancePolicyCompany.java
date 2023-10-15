@@ -1,4 +1,4 @@
-package ru.alexeyaleksandrov.covidcenterservice.models.insurancepolicy;
+package ru.alexeyaleksandrov.covidcenterservice.models.insurance;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -27,4 +27,7 @@ public class InsurancePolicyCompany
 
     @Column(name = "bank_identification_code", nullable = false)
     private Long bankIdentificationCode;
+
+    @Column(name = "policy_code")
+    private Long policyCode;
 }

@@ -1,10 +1,7 @@
-package ru.alexeyaleksandrov.covidcenterservice.models.users.control;
+package ru.alexeyaleksandrov.covidcenterservice.models.users;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Entity
 @Table(name = "login_history")
@@ -20,12 +17,9 @@ public class LoginHistory
     @Column(name = "login", nullable = false)
     private String login;
 
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
-
-    @Column(name = "\"time\"")
-    private LocalTime time;
-
     @Column(name = "successful")
     private Boolean successful;
+
+    @Column(name = "enter_date", nullable = false)
+    private Long enterDate;
 }

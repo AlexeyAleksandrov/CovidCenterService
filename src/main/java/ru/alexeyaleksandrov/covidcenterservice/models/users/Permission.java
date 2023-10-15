@@ -1,14 +1,12 @@
-package ru.alexeyaleksandrov.covidcenterservice.models.users.control;
+package ru.alexeyaleksandrov.covidcenterservice.models.users;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Entity
-@Table(name = "roles")
+@Table(name = "permissions")
 @Data
-public class Role
+public class Permission
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +15,4 @@ public class Role
 
     @Column(name = "name")
     private String name;
-
-    @ManyToMany
-    private List<Permission> permissions;
 }
