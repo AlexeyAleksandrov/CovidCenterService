@@ -1,15 +1,24 @@
 package ru.alexeyaleksandrov.covidcenterservice.models.users;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Table(name = "roles")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Role
 {
+    public Role(String name, List<Permission> permissions) {
+        this.name = name;
+        this.permissions = permissions;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
