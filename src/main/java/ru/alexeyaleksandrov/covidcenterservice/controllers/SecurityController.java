@@ -1,0 +1,72 @@
+package ru.alexeyaleksandrov.covidcenterservice.controllers;
+
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import ru.alexeyaleksandrov.covidcenterservice.dto.SignInRequest;
+import ru.alexeyaleksandrov.covidcenterservice.dto.SignUpRequest;
+import ru.alexeyaleksandrov.covidcenterservice.models.users.Member;
+import ru.alexeyaleksandrov.covidcenterservice.repositories.users.MemberRepository;
+import ru.alexeyaleksandrov.covidcenterservice.security.jwt.JwtUtils;
+
+@RestController
+@RequestMapping("/auth")
+@AllArgsConstructor
+public class SecurityController
+{
+    private MemberRepository memberRepository;
+    private PasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
+    private JwtUtils jwtUtils;
+
+    @PostMapping("/signup")
+    ResponseEntity<?> signup(@RequestBody SignUpRequest signUpRequest)  // регистрация
+    {
+        if(memberRepository.existsByLogin(signUpRequest.getUsername()))
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Choose different name!");
+        }
+//        if(memberRepository.existsByEmail(signUpRequest.getEmail()))
+//        {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Choose different email!");
+//        }
+
+        String hashed = passwordEncoder.encode(signUpRequest.getPassword());
+
+        Member member = new Member();
+        member.setLogin(signUpRequest.getUsername());
+        member.setFullName(signUpRequest.getFullName());
+        member.setPassword(hashed);
+        memberRepository.save(member);
+        return ResponseEntity.ok("Success!");
+    }
+
+    @PostMapping("/signin")
+    ResponseEntity<?> signin(@RequestBody SignInRequest signInRequest)
+    {
+        Authentication authentication = null;
+        try     // пытаемся авторизовать пользователя
+        {
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
+        }
+        catch (BadCredentialsException e)
+        {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        // если авторизация корректна
+        SecurityContextHolder.getContext().setAuthentication(authentication);   // пропихиваем авторизацию в контекст
+        String jwt = jwtUtils.generateToken(authentication);    // генерируем токен
+        return ResponseEntity.ok(jwt);      // возвращаем токен в теле ответа
+    }
+}
