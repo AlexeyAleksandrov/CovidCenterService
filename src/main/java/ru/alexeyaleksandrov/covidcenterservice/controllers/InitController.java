@@ -33,8 +33,10 @@ public class InitController
     @GetMapping("/roles")
     public ResponseEntity<String> initRoles()
     {
+        Permission permission = permissionRepository.findById(1L).orElseThrow();
+
         List<Role> roles = new ArrayList<>();
-        roles.add(new Role("No role", List.of(new Permission("No permission"))));
+        roles.add(new Role("No role", List.of(permission)));
         roleRepository.saveAllAndFlush(roles);
         return ResponseEntity.ok("Saved!");
     }
