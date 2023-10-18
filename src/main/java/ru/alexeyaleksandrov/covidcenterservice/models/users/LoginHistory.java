@@ -13,8 +13,7 @@ public class LoginHistory
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Lob
-    @Column(name = "login", nullable = false)
+    @Column(name = "user_login", nullable = false)
     private String login;
 
     @Column(name = "successful")
