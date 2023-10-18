@@ -59,8 +59,6 @@ public class MembersImporter
                 long timestamp = TimestampConverter.convertMMddyyyyToTimestamp(data[5]);
                 member.setLastEnterTime(timestamp);     // last_enter
 
-                String jsonString = "{\"code\":176},{\"code\":543},{\"code\":855},{\"code\":258}";
-
                 List<Integer> codeList = new ArrayList<>();
                 try
                 {
