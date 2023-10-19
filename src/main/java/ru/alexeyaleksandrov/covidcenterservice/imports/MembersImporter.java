@@ -13,9 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class MembersImporter
 {
@@ -41,13 +39,15 @@ public class MembersImporter
                 int first = line.indexOf("[");  // начало массива
                 int last = line.lastIndexOf("]")+1;
                 String servicesJson = line.substring(first, last);
-                servicesJson = servicesJson.replace("\"", "");
                 line = line.replace(servicesJson, "");
+                servicesJson = servicesJson.replace("\"", "");
 
-//                System.out.println(line);
-//                System.out.println(servicesJson);
+                System.out.println(line);
+                System.out.println(servicesJson);
 
                 String[] data = line.split(",");
+
+                System.out.println(Arrays.toString(data));
 
                 Member member = new Member();
                 member.setId(Long.parseLong(data[0]));  // id
@@ -75,6 +75,10 @@ public class MembersImporter
                     e.printStackTrace();
                 }
 
+                // удаляем дубликаты
+                Set<Integer> codeSet = Set.copyOf(codeList);
+                codeList = List.copyOf(codeSet);
+
                 // Print code list
                 for (int code : codeList)
                 {
@@ -94,6 +98,8 @@ public class MembersImporter
 
                 //                List<Role> role = new ArrayList<>();    // TODO: загрузка списка ролей
                 //                member.setRole(role.get(Integer.parseInt(data[7])));
+                System.out.println("data = " + data[7]);
+                System.out.println(Integer.parseInt(data[7]));
 
                 members.add(member);
             }

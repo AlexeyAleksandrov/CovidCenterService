@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.alexeyaleksandrov.covidcenterservice.dto.SignInRequest;
 import ru.alexeyaleksandrov.covidcenterservice.dto.SignUpRequest;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.Member;
+import ru.alexeyaleksandrov.covidcenterservice.models.users.Role;
 import ru.alexeyaleksandrov.covidcenterservice.repositories.users.MemberRepository;
+import ru.alexeyaleksandrov.covidcenterservice.repositories.users.RoleRepository;
 import ru.alexeyaleksandrov.covidcenterservice.security.jwt.JwtUtils;
 
 @RestController
@@ -28,6 +30,7 @@ public class SecurityController
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
     private JwtUtils jwtUtils;
+    private RoleRepository roleRepository;
 
     @PostMapping("/signup")
     ResponseEntity<?> signup(@RequestBody SignUpRequest signUpRequest)  // регистрация
@@ -36,10 +39,6 @@ public class SecurityController
         {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Choose different name!");
         }
-//        if(memberRepository.existsByEmail(signUpRequest.getEmail()))
-//        {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Choose different email!");
-//        }
 
         String hashed = passwordEncoder.encode(signUpRequest.getPassword());
 
@@ -47,6 +46,10 @@ public class SecurityController
         member.setLogin(signUpRequest.getUsername());
         member.setFullName(signUpRequest.getFullName());
         member.setPassword(hashed);
+
+        Role role = roleRepository.findAll().get(0);
+        member.setRole(role);
+
         memberRepository.save(member);
         return ResponseEntity.ok("Success!");
     }
