@@ -3,10 +3,12 @@ package ru.alexeyaleksandrov.covidcenterservice.security.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.Member;
 
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +16,6 @@ public class SecurityUserDetails implements UserDetails
 {
     private Long id;
     private String userName;
-    private String email;
     private String password;
 
     public static SecurityUserDetails build (Member user)
@@ -22,7 +23,6 @@ public class SecurityUserDetails implements UserDetails
         return new SecurityUserDetails(
                 user.getId(),
                 user.getLogin(),
-                "",     // TODO: добавить email для сотрудников
                 user.getPassword()
         );
     }
