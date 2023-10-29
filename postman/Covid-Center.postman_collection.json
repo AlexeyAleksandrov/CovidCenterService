@@ -13,7 +13,19 @@
 					"name": "users",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/init/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"init",
+								"users"
+							]
+						}
 					},
 					"response": []
 				},
@@ -21,7 +33,19 @@
 					"name": "permissions",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/init/permissions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"init",
+								"permissions"
+							]
+						}
 					},
 					"response": []
 				},
@@ -44,6 +68,26 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "patients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/init/patients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"init",
+								"patients"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -57,7 +101,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"hello\",\r\n    \"password\": \"hello\"\r\n}",
+							"raw": "{\r\n    \"fullName\": \"Hello Hello User\",\r\n    \"username\": \"hello\",\r\n    \"password\": \"hello\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -81,6 +125,35 @@
 				},
 				{
 					"name": "SignIn",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"nmably1\",\r\n    \"password\": \"ukM0e6\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/signin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SignIn Copy",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -121,7 +194,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoZWxsbyIsImlhdCI6MTY5NjE2MTkzMCwiZXhwIjoxNjk2MTYxOTkwfQ.m-D3K-XZZchRjgd9g4AEscVd_6BeKYVZtX0OfwVJ-ao",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaGFja2luZzAiLCJpYXQiOjE2OTg0NDEzMTIsImV4cCI6MTY5ODQ0MTM3Mn0.WDD6-1oRvL2DuR3TQg6zisxz6L-w2gDIPKY9v9t7KzY",
 									"type": "string"
 								}
 							]

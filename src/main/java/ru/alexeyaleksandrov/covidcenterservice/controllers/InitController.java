@@ -3,25 +3,38 @@ package ru.alexeyaleksandrov.covidcenterservice.controllers;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.alexeyaleksandrov.covidcenterservice.imports.Dataset;
+import ru.alexeyaleksandrov.covidcenterservice.imports.Record;
+import ru.alexeyaleksandrov.covidcenterservice.models.insurance.InsurancePolicyCompany;
+import ru.alexeyaleksandrov.covidcenterservice.models.insurance.SocialType;
 import ru.alexeyaleksandrov.covidcenterservice.models.services.MedicalService;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.Member;
+import ru.alexeyaleksandrov.covidcenterservice.models.users.Patient;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.Permission;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.Role;
+import ru.alexeyaleksandrov.covidcenterservice.repositories.insurance.InsurancePolicyCompanyRepository;
 import ru.alexeyaleksandrov.covidcenterservice.repositories.services.MedicalServiceRepository;
 import ru.alexeyaleksandrov.covidcenterservice.repositories.users.MemberRepository;
+import ru.alexeyaleksandrov.covidcenterservice.repositories.users.PatientRepository;
 import ru.alexeyaleksandrov.covidcenterservice.repositories.users.PermissionRepository;
 import ru.alexeyaleksandrov.covidcenterservice.repositories.users.RoleRepository;
 import ru.alexeyaleksandrov.covidcenterservice.services.TimestampConverter;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,6 +48,8 @@ public class InitController
     MedicalServiceRepository medicalServiceRepository;
     MemberRepository memberRepository;
     PasswordEncoder passwordEncoder;
+    PatientRepository patientRepository;
+    InsurancePolicyCompanyRepository insurancePolicyCompanyRepository;
 
     @GetMapping("/permissions")
     public ResponseEntity<String> initPermissions()
@@ -130,5 +145,115 @@ public class InitController
         }
 
         return ResponseEntity.ok("Saved!");
+    }
+
+    @GetMapping("/patients")
+    public ResponseEntity<String> patients()
+    {
+        try
+        {
+            // Создание объекта JAXBContext
+            JAXBContext jaxbContext = JAXBContext.newInstance(Dataset.class);
+
+            // Создание объекта Unmarshaller
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+
+            // Загрузка XML файла
+            File file = new File("C:\\Users\\ASUS\\Downloads\\COVID-центр\\COVID-центр\\Ресурсы 1\\patients.xml");
+
+            // Десериализация XML в объект Dataset
+            Dataset dataset = (Dataset) jaxbUnmarshaller.unmarshal(file);
+
+            // Получение списка записей пациентов
+            List<Record> records = dataset.getRecordList();
+
+            // Создание списка пациентов для сохранения данных
+            List<Patient> patients = new ArrayList<>();
+
+            // страховые компании
+            List<InsurancePolicyCompany> insurancePolicyCompanies = new ArrayList<>();
+            insurancePolicyCompanies = insurancePolicyCompanyRepository.findAll();
+
+            // Преобразование записей пациентов в объекты Patient
+            for (Record record : records)
+            {
+                Patient patient = new Patient();
+                patient.setId(record.getId());
+                patient.setFullName(record.getFullName());
+                // Установка остальных полей пациента
+                patient.setPassport(record.getPassportS() + record.getPassportN());
+                patient.setPhoneNumber(record.getPhone());
+                patient.setEmail(record.getEmail());
+                patient.setLogin(record.getLogin());
+                String hashed = passwordEncoder.encode(record.getPassword());
+                patient.setPassword(hashed);
+                patient.setBirthday(record.getBirthdateTimestamp());
+                patient.setSocialSecNumber(record.getSocialSecNumber());
+                patient.setSocialType(SocialType.valueOf(record.getSocialType().toUpperCase()));
+                patient.setCountry(record.getCountry());
+                patient.setIpAddress(record.getIpAddress());
+                patient.setUserAgent(record.getUserAgent());
+
+                InsurancePolicyCompany insurancePolicy = insurancePolicyCompanies.stream().filter(insurancePolicyCompany -> insurancePolicyCompany.getName().equals(record.getInsuranceName())).findFirst().orElse(null);
+                if(insurancePolicy == null)
+                {
+                    // Создание объекта InsurancePolicyCompany и установка его для пациента
+                    insurancePolicy = new InsurancePolicyCompany();
+                    insurancePolicy.setName(record.getInsuranceName());
+                    insurancePolicy.setAddress(record.getInsuranceAddress());
+                    insurancePolicy.setIndividualTaxNumber(record.getInsuranceInn());
+                    insurancePolicy.setPolicyCode(record.getInsurancePc());
+                    insurancePolicy.setBankIdentificationCode(record.getInsuranceBik());
+
+                    insurancePolicyCompanies.add(insurancePolicy);
+                }
+                patient.setInsurancePolicy(insurancePolicy);
+
+                patients.add(patient);
+            }
+
+            // Вывод данных пациентов
+//            for (Patient patient : patients)
+//            {
+//                System.out.println(patient);
+//            }
+
+            // Вывод данных компаний
+//            for (InsurancePolicyCompany company : insurancePolicyCompanies)
+//            {
+//                System.out.println(company);
+//            }
+
+            int maxEmail = patients.stream()
+                    .mapToInt(p -> p.getEmail().length())
+                    .max().orElse(-1);
+            System.out.println("Max Email: " + maxEmail);
+            Patient patient = patients.stream()
+                    .filter(p -> p.getEmail().length() == maxEmail)
+                    .findFirst().get();
+            System.out.println(patient);
+
+            int maxPassword = patients.stream()
+                    .mapToInt(p -> p.getPassword().length())
+                    .max().orElse(-1);
+            System.out.println("Max Password: " + maxPassword);
+
+            int maxUserAgent = patients.stream()
+                    .mapToInt(p -> p.getUserAgent().length())
+                    .max().orElse(-1);
+            System.out.println("Max UserAgent: " + maxUserAgent);
+
+//            insurancePolicyCompanyRepository.saveAllAndFlush(insurancePolicyCompanies);
+            patientRepository.saveAllAndFlush(patients);
+
+
+
+            return ResponseEntity.ok("Данные о пациентах загружены");
+        }
+        catch (JAXBException e)
+        {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

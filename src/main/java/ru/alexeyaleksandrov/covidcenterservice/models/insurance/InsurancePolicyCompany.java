@@ -22,9 +22,6 @@ public class InsurancePolicyCompany
     @Column(name = "individual_tax_number", nullable = false)
     private Long individualTaxNumber;
 
-    @Column(name = "checking_account", nullable = false)
-    private Long checkingAccount;
-
     @Column(name = "bank_identification_code", nullable = false)
     private Long bankIdentificationCode;
 

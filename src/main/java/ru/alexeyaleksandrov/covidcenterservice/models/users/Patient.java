@@ -25,10 +25,10 @@ public class Patient
     @Column(name = "passport", nullable = false, length = 10)
     private String passport;
 
-    @Column(name = "phone_number", length = 15)
+    @Column(name = "phone_number", length = 20)
     private String phoneNumber;
 
-    @Column(name = "email")
+    @Column(name = "email", length = 50)
     private String email;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -38,7 +38,7 @@ public class Patient
     @Column(name = "login", length = 20)
     private String login;
 
-    @Column(name = "password")
+    @Column(name = "password", length = 100)
     private String password;
 
     @Column(name = "birthday")
@@ -57,6 +57,6 @@ public class Patient
     @Column(name = "ip_address", length = 15)
     private String ipAddress;
 
-    @Column(name = "user_agent")
+    @Column(name = "user_agent", columnDefinition = "TEXT")
     private String userAgent;
 }
