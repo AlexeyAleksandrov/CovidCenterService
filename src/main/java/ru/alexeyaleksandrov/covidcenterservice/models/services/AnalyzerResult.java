@@ -27,8 +27,9 @@ public class AnalyzerResult
     @Column(name = "competition_time")
     private Long competitionTime;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 20)
-    private String status;
+    private AnalyzerResultStatus status;
 
     @Column(name = "accepted")
     private Boolean accepted;
@@ -36,4 +37,8 @@ public class AnalyzerResult
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "service_id")
+    private MedicalService service;
 }

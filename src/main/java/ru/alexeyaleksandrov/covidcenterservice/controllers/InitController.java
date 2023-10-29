@@ -3,22 +3,28 @@ package ru.alexeyaleksandrov.covidcenterservice.controllers;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.alexeyaleksandrov.covidcenterservice.imports.Dataset;
-import ru.alexeyaleksandrov.covidcenterservice.imports.Record;
+import ru.alexeyaleksandrov.covidcenterservice.imports.BloodServiceDataset;
+import ru.alexeyaleksandrov.covidcenterservice.imports.BloodServicesRecord;
+import ru.alexeyaleksandrov.covidcenterservice.imports.PatientDataset;
+import ru.alexeyaleksandrov.covidcenterservice.imports.PatientRecord;
 import ru.alexeyaleksandrov.covidcenterservice.models.insurance.InsurancePolicyCompany;
 import ru.alexeyaleksandrov.covidcenterservice.models.insurance.SocialType;
+import ru.alexeyaleksandrov.covidcenterservice.models.services.Analyzer;
+import ru.alexeyaleksandrov.covidcenterservice.models.services.AnalyzerResult;
+import ru.alexeyaleksandrov.covidcenterservice.models.services.AnalyzerResultStatus;
 import ru.alexeyaleksandrov.covidcenterservice.models.services.MedicalService;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.Member;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.Patient;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.Permission;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.Role;
 import ru.alexeyaleksandrov.covidcenterservice.repositories.insurance.InsurancePolicyCompanyRepository;
+import ru.alexeyaleksandrov.covidcenterservice.repositories.services.AnalyzerRepository;
+import ru.alexeyaleksandrov.covidcenterservice.repositories.services.AnalyzerResultRepository;
 import ru.alexeyaleksandrov.covidcenterservice.repositories.services.MedicalServiceRepository;
 import ru.alexeyaleksandrov.covidcenterservice.repositories.users.MemberRepository;
 import ru.alexeyaleksandrov.covidcenterservice.repositories.users.PatientRepository;
@@ -33,10 +39,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/init")
@@ -50,6 +53,8 @@ public class InitController
     PasswordEncoder passwordEncoder;
     PatientRepository patientRepository;
     InsurancePolicyCompanyRepository insurancePolicyCompanyRepository;
+    AnalyzerResultRepository analyzerResultRepository;
+    AnalyzerRepository analyzerRepository;
 
     @GetMapping("/permissions")
     public ResponseEntity<String> initPermissions()
@@ -153,7 +158,7 @@ public class InitController
         try
         {
             // Создание объекта JAXBContext
-            JAXBContext jaxbContext = JAXBContext.newInstance(Dataset.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(PatientDataset.class);
 
             // Создание объекта Unmarshaller
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -162,10 +167,10 @@ public class InitController
             File file = new File("C:\\Users\\ASUS\\Downloads\\COVID-центр\\COVID-центр\\Ресурсы 1\\patients.xml");
 
             // Десериализация XML в объект Dataset
-            Dataset dataset = (Dataset) jaxbUnmarshaller.unmarshal(file);
+            PatientDataset patientDataset = (PatientDataset) jaxbUnmarshaller.unmarshal(file);
 
             // Получение списка записей пациентов
-            List<Record> records = dataset.getRecordList();
+            List<PatientRecord> patientRecords = patientDataset.getRecordList();
 
             // Создание списка пациентов для сохранения данных
             List<Patient> patients = new ArrayList<>();
@@ -175,35 +180,35 @@ public class InitController
             insurancePolicyCompanies = insurancePolicyCompanyRepository.findAll();
 
             // Преобразование записей пациентов в объекты Patient
-            for (Record record : records)
+            for (PatientRecord patientRecord : patientRecords)
             {
                 Patient patient = new Patient();
-                patient.setId(record.getId());
-                patient.setFullName(record.getFullName());
+                patient.setId(patientRecord.getId());
+                patient.setFullName(patientRecord.getFullName());
                 // Установка остальных полей пациента
-                patient.setPassport(record.getPassportS() + record.getPassportN());
-                patient.setPhoneNumber(record.getPhone());
-                patient.setEmail(record.getEmail());
-                patient.setLogin(record.getLogin());
-                String hashed = passwordEncoder.encode(record.getPassword());
+                patient.setPassport(patientRecord.getPassportS() + patientRecord.getPassportN());
+                patient.setPhoneNumber(patientRecord.getPhone());
+                patient.setEmail(patientRecord.getEmail());
+                patient.setLogin(patientRecord.getLogin());
+                String hashed = passwordEncoder.encode(patientRecord.getPassword());
                 patient.setPassword(hashed);
-                patient.setBirthday(record.getBirthdateTimestamp());
-                patient.setSocialSecNumber(record.getSocialSecNumber());
-                patient.setSocialType(SocialType.valueOf(record.getSocialType().toUpperCase()));
-                patient.setCountry(record.getCountry());
-                patient.setIpAddress(record.getIpAddress());
-                patient.setUserAgent(record.getUserAgent());
+                patient.setBirthday(patientRecord.getBirthdateTimestamp());
+                patient.setSocialSecNumber(patientRecord.getSocialSecNumber());
+                patient.setSocialType(SocialType.valueOf(patientRecord.getSocialType().toUpperCase()));
+                patient.setCountry(patientRecord.getCountry());
+                patient.setIpAddress(patientRecord.getIpAddress());
+                patient.setUserAgent(patientRecord.getUserAgent());
 
-                InsurancePolicyCompany insurancePolicy = insurancePolicyCompanies.stream().filter(insurancePolicyCompany -> insurancePolicyCompany.getName().equals(record.getInsuranceName())).findFirst().orElse(null);
+                InsurancePolicyCompany insurancePolicy = insurancePolicyCompanies.stream().filter(insurancePolicyCompany -> insurancePolicyCompany.getName().equals(patientRecord.getInsuranceName())).findFirst().orElse(null);
                 if(insurancePolicy == null)
                 {
                     // Создание объекта InsurancePolicyCompany и установка его для пациента
                     insurancePolicy = new InsurancePolicyCompany();
-                    insurancePolicy.setName(record.getInsuranceName());
-                    insurancePolicy.setAddress(record.getInsuranceAddress());
-                    insurancePolicy.setIndividualTaxNumber(record.getInsuranceInn());
-                    insurancePolicy.setPolicyCode(record.getInsurancePc());
-                    insurancePolicy.setBankIdentificationCode(record.getInsuranceBik());
+                    insurancePolicy.setName(patientRecord.getInsuranceName());
+                    insurancePolicy.setAddress(patientRecord.getInsuranceAddress());
+                    insurancePolicy.setIndividualTaxNumber(patientRecord.getInsuranceInn());
+                    insurancePolicy.setPolicyCode(patientRecord.getInsurancePc());
+                    insurancePolicy.setBankIdentificationCode(patientRecord.getInsuranceBik());
 
                     insurancePolicyCompanies.add(insurancePolicy);
                 }
@@ -249,6 +254,94 @@ public class InitController
 
 
             return ResponseEntity.ok("Данные о пациентах загружены");
+        }
+        catch (JAXBException e)
+        {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/bloodService")
+    private ResponseEntity<String> bloodService()
+    {
+        try
+        {
+            // Создание объекта JAXBContext
+            JAXBContext jaxbContext = JAXBContext.newInstance(BloodServiceDataset.class);
+
+            // Создание объекта Unmarshaller
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+
+            // Загрузка XML файла
+            File file = new File("C:\\Users\\ASUS\\Downloads\\COVID-центр\\COVID-центр\\Ресурсы 1\\blood_services.xml");
+
+            // Десериализация XML в объект Dataset
+            BloodServiceDataset bloodServiceDataset = (BloodServiceDataset) jaxbUnmarshaller.unmarshal(file);
+
+            // Получение списка записей пациентов
+            List<BloodServicesRecord> bloodServicesRecords = bloodServiceDataset.getRecordList();
+
+            // Создание списка пациентов для сохранения данных
+            List<AnalyzerResult> analyzerResults = new ArrayList<>();
+
+            // страховые компании
+            Set<Analyzer> analyzers = new HashSet<>();
+
+            Long startId = memberRepository.findAll().get(0).getId() - 1;
+
+            for (BloodServicesRecord bloodServicesRecord : bloodServicesRecords)
+            {
+                AnalyzerResult analyzerResult = new AnalyzerResult();
+                analyzerResult.setId(bloodServicesRecord.getBlood());
+                analyzerResult.setService(medicalServiceRepository.findById(bloodServicesRecord.getService()).get());
+                analyzerResult.setResult(bloodServicesRecord.getResult());
+                analyzerResult.setCompetitionTime(bloodServicesRecord.getFinished());
+                analyzerResult.setAccepted(bloodServicesRecord.getAccepted());
+                analyzerResult.setStatus(AnalyzerResultStatus.valueOf(bloodServicesRecord.getStatus().toUpperCase()));
+                try
+                {
+                    analyzerResult.setMember(memberRepository.findById(bloodServicesRecord.getUser() + startId).get());
+                }
+                catch (NoSuchElementException elementException)
+                {
+                    System.out.println("NoSuchElementException: " + bloodServicesRecord);
+                    throw elementException;
+                }
+
+                Analyzer analyzer = null;
+                if (analyzers.stream().noneMatch(a -> a.getName().equals(bloodServicesRecord.getAnalyzer())))
+                {
+                    analyzer = new Analyzer();
+                    analyzer.setName(bloodServicesRecord.getAnalyzer());
+                    analyzers.add(analyzer);
+                }
+                else
+                {
+                    analyzer = analyzers.stream().filter(a -> a.getName().equals(bloodServicesRecord.getAnalyzer())).findAny().get();
+                }
+                analyzerResult.setAnalyzer(analyzer);
+
+                analyzerResults.add(analyzerResult);
+            }
+
+            System.out.println("Результаты анализатора");
+            for (AnalyzerResult analyzerResult : analyzerResults)
+            {
+                System.out.println(analyzerResult);
+            }
+
+            System.out.println("----");
+            System.out.println("Анализаторы:");
+            for (Analyzer analyzer : analyzers)
+            {
+                System.out.println(analyzer);
+            }
+
+            analyzerRepository.saveAllAndFlush(analyzers);
+            analyzerResultRepository.saveAllAndFlush(analyzerResults);
+
+            return ResponseEntity.ok("Данные о результатах анализаторов загружены");
         }
         catch (JAXBException e)
         {

@@ -88,6 +88,26 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "bloodService",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/init/bloodService",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"init",
+								"bloodService"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

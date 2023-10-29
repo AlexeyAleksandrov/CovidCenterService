@@ -4,37 +4,10 @@ import lombok.Data;
 
 import javax.xml.bind.annotation.*;
 
-//@Data
-//@XmlRootElement(name = "record")
-//@XmlType(propOrder = {"fullName", "login", "pwd", "guid", "email", "social_sec_number", "ein", "social_type", "phone", "passport_s", "passport_n", "birthdate_timestamp", "id", "country", "insurance_name", "insurance_address", "insurance_inn", "ipadress", "insurance_pc", "insurance_bik", "ua"})
-//public class Record {
-//
-//    private String fullName;
-//    private String login;
-//    private String pwd;
-//    private String guid;
-//    private String email;
-//    private String social_sec_number;
-//    private String ein;
-//    private String social_type;
-//    private String phone;
-//    private String passport_s;
-//    private String passport_n;
-//    private Long birthdate_timestamp;
-//    private Long id;
-//    private String country;
-//    private String insurance_name;
-//    private String insurance_address;
-//    private Long insurance_inn;
-//    private String ipadress;
-//    private Long insurance_pc;
-//    private Long insurance_bik;
-//    private String ua;
-//}
-
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class Record {
+public class PatientRecord
+{
 
     @XmlElement(name = "id")
     private Long id;

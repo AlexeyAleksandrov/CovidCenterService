@@ -20,7 +20,7 @@ public class PatientsImport
         try
         {
             // Создание объекта JAXBContext
-            JAXBContext jaxbContext = JAXBContext.newInstance(Dataset.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(PatientDataset.class);
 
             // Создание объекта Unmarshaller
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -29,10 +29,10 @@ public class PatientsImport
             File file = new File("C:\\Users\\ASUS\\Downloads\\COVID-центр\\COVID-центр\\Ресурсы 1\\patients.xml");
 
             // Десериализация XML в объект Dataset
-            Dataset dataset = (Dataset) jaxbUnmarshaller.unmarshal(file);
+            PatientDataset patientDataset = (PatientDataset) jaxbUnmarshaller.unmarshal(file);
 
             // Получение списка записей пациентов
-            List<Record> records = dataset.getRecordList();
+            List<PatientRecord> patientRecords = patientDataset.getRecordList();
 
             // Создание списка пациентов для сохранения данных
             List<Patient> patients = new ArrayList<>();
@@ -41,34 +41,34 @@ public class PatientsImport
             Set<InsurancePolicyCompany> insurancePolicyCompanies = new HashSet<>();
 
             // Преобразование записей пациентов в объекты Patient
-            for (Record record : records)
+            for (PatientRecord patientRecord : patientRecords)
             {
                 Patient patient = new Patient();
-                patient.setId(record.getId());
-                patient.setFullName(record.getFullName());
+                patient.setId(patientRecord.getId());
+                patient.setFullName(patientRecord.getFullName());
                 // Установка остальных полей пациента
-                patient.setPassport(record.getPassportS() + record.getPassportN());
-                patient.setPhoneNumber(record.getPhone());
-                patient.setEmail(record.getEmail());
-                patient.setLogin(record.getLogin());
-                patient.setPassword(record.getPassword());
-                patient.setBirthday(record.getBirthdateTimestamp());
-                patient.setSocialSecNumber(record.getSocialSecNumber());
-                patient.setSocialType(SocialType.valueOf(record.getSocialType().toUpperCase()));
-                patient.setCountry(record.getCountry());
-                patient.setIpAddress(record.getIpAddress());
-                patient.setUserAgent(record.getUserAgent());
+                patient.setPassport(patientRecord.getPassportS() + patientRecord.getPassportN());
+                patient.setPhoneNumber(patientRecord.getPhone());
+                patient.setEmail(patientRecord.getEmail());
+                patient.setLogin(patientRecord.getLogin());
+                patient.setPassword(patientRecord.getPassword());
+                patient.setBirthday(patientRecord.getBirthdateTimestamp());
+                patient.setSocialSecNumber(patientRecord.getSocialSecNumber());
+                patient.setSocialType(SocialType.valueOf(patientRecord.getSocialType().toUpperCase()));
+                patient.setCountry(patientRecord.getCountry());
+                patient.setIpAddress(patientRecord.getIpAddress());
+                patient.setUserAgent(patientRecord.getUserAgent());
 
-                InsurancePolicyCompany insurancePolicy = insurancePolicyCompanies.stream().filter(insurancePolicyCompany -> insurancePolicyCompany.getName().equals(record.getInsuranceName())).findFirst().orElse(null);
+                InsurancePolicyCompany insurancePolicy = insurancePolicyCompanies.stream().filter(insurancePolicyCompany -> insurancePolicyCompany.getName().equals(patientRecord.getInsuranceName())).findFirst().orElse(null);
                 if(insurancePolicy == null)
                 {
                     // Создание объекта InsurancePolicyCompany и установка его для пациента
                     insurancePolicy = new InsurancePolicyCompany();
-                    insurancePolicy.setName(record.getInsuranceName());
-                    insurancePolicy.setAddress(record.getInsuranceAddress());
-                    insurancePolicy.setIndividualTaxNumber(record.getInsuranceInn());
-                    insurancePolicy.setPolicyCode(record.getInsurancePc());
-                    insurancePolicy.setBankIdentificationCode(record.getInsuranceBik());
+                    insurancePolicy.setName(patientRecord.getInsuranceName());
+                    insurancePolicy.setAddress(patientRecord.getInsuranceAddress());
+                    insurancePolicy.setIndividualTaxNumber(patientRecord.getInsuranceInn());
+                    insurancePolicy.setPolicyCode(patientRecord.getInsurancePc());
+                    insurancePolicy.setBankIdentificationCode(patientRecord.getInsuranceBik());
 
                     insurancePolicyCompanies.add(insurancePolicy);
                 }
