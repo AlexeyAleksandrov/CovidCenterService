@@ -7,8 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.Member;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -17,20 +16,24 @@ public class SecurityUserDetails implements UserDetails
     private Long id;
     private String userName;
     private String password;
+    private Set<SimpleGrantedAuthority> roles;
 
     public static SecurityUserDetails build (Member user)
     {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
         return new SecurityUserDetails(
                 user.getId(),
                 user.getLogin(),
-                user.getPassword()
+                user.getPassword(),
+                authorities
         );
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities()
     {
-        return null;
+        return roles;
     }
 
     @Override

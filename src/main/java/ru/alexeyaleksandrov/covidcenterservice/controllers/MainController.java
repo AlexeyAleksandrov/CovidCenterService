@@ -13,6 +13,8 @@ import java.security.Principal;
 public class MainController
 {
     @GetMapping("/user")
+//    @Secured("ROLE_ASSISTANT_RESEARCHER")
+//    @PreAuthorize("hasAnyAuthority('ROLE_ASSISTANT_RESEARCHER')")
     public String userAccess(Principal principal)
     {
         if(principal == null)

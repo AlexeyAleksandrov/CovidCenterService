@@ -28,7 +28,7 @@ public class Member
     @Column(name = "ip", length = 15)
     private String ip;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "role", nullable = false)
     private Role role;
 
