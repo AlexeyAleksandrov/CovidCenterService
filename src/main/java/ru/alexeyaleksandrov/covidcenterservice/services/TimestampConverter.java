@@ -2,6 +2,7 @@ package ru.alexeyaleksandrov.covidcenterservice.services;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 
 public class TimestampConverter
 {
@@ -18,5 +19,10 @@ public class TimestampConverter
             e.printStackTrace();
         }
         return timestamp;
+    }
+
+    public static long getLocalTimestamp()
+    {
+        return Instant.now().toEpochMilli();
     }
 }

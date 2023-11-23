@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class PatientsImport
 {
-    public static void main(String[] args)
+    public /*static*/ void main(String[] args)
     {
         try
         {

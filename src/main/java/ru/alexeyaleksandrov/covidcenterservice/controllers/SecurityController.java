@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.alexeyaleksandrov.covidcenterservice.dto.SignInRequest;
 import ru.alexeyaleksandrov.covidcenterservice.dto.SignUpRequest;
+import ru.alexeyaleksandrov.covidcenterservice.models.users.LoginHistory;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.Member;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.Role;
+import ru.alexeyaleksandrov.covidcenterservice.repositories.users.LoginHistoryRepository;
 import ru.alexeyaleksandrov.covidcenterservice.repositories.users.MemberRepository;
 import ru.alexeyaleksandrov.covidcenterservice.repositories.users.RoleRepository;
 import ru.alexeyaleksandrov.covidcenterservice.security.jwt.JwtUtils;
+import ru.alexeyaleksandrov.covidcenterservice.services.TimestampConverter;
 
 @RestController
 @RequestMapping("/auth")
@@ -31,6 +34,7 @@ public class SecurityController
     private AuthenticationManager authenticationManager;
     private JwtUtils jwtUtils;
     private RoleRepository roleRepository;
+    private LoginHistoryRepository loginHistoryRepository;
 
     @PostMapping("/signup")
     ResponseEntity<?> signup(@RequestBody SignUpRequest signUpRequest)  // регистрация
@@ -57,6 +61,11 @@ public class SecurityController
     @PostMapping("/signin")
     ResponseEntity<?> signin(@RequestBody SignInRequest signInRequest)
     {
+        // сохраняем информацию о входе
+        LoginHistory loginHistory = new LoginHistory();
+        loginHistory.setLogin(signInRequest.getUsername());     // сохраняем логин
+        loginHistory.setEnterDate(TimestampConverter.getLocalTimestamp());      // сохраняем время входа
+
         Authentication authentication = null;
         try     // пытаемся авторизовать пользователя
         {
@@ -64,12 +73,20 @@ public class SecurityController
         }
         catch (BadCredentialsException e)
         {
+            // сохраняем историю
+            loginHistory.setSuccessful(false);
+            loginHistoryRepository.save(loginHistory);
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         // если авторизация корректна
         SecurityContextHolder.getContext().setAuthentication(authentication);   // пропихиваем авторизацию в контекст
         String jwt = jwtUtils.generateToken(authentication);    // генерируем токен
+
+        // сохраняем историю
+        loginHistory.setSuccessful(true);
+        loginHistoryRepository.save(loginHistory);
+
         return ResponseEntity.ok(jwt);      // возвращаем токен в теле ответа
     }
 }

@@ -1,4 +1,4 @@
-package ru.alexeyaleksandrov.covidcenterservice.controllers;
+package ru.alexeyaleksandrov.covidcenterservice.imports;
 
 import lombok.AllArgsConstructor;
 import org.springframework.boot.configurationprocessor.json.JSONArray;

@@ -17,7 +17,7 @@ import java.util.*;
 
 public class MembersImporter
 {
-    public static void main(String[] args)
+    public /*static*/ void main(String[] args)
     {
         MembersImporter membersImporter = new MembersImporter();
         membersImporter.importMembers();
