@@ -2,7 +2,7 @@ package ru.alexeyaleksandrov.covidcenterservice.models.orders;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import ru.alexeyaleksandrov.covidcenterservice.models.users.Patient;
+import ru.alexeyaleksandrov.covidcenterservice.models.users.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,6 +32,6 @@ public class Order
     private List<OrderService> services;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "patient_id", nullable = false)
-    private Patient patient;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

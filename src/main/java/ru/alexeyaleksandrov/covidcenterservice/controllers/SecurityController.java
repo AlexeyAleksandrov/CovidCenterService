@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.alexeyaleksandrov.covidcenterservice.dto.SignInRequest;
 import ru.alexeyaleksandrov.covidcenterservice.dto.SignUpRequest;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.LoginHistory;
-import ru.alexeyaleksandrov.covidcenterservice.models.users.Member;
+import ru.alexeyaleksandrov.covidcenterservice.models.users.User;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.Role;
 import ru.alexeyaleksandrov.covidcenterservice.repositories.users.LoginHistoryRepository;
-import ru.alexeyaleksandrov.covidcenterservice.repositories.users.MemberRepository;
+import ru.alexeyaleksandrov.covidcenterservice.repositories.users.UsersRepository;
 import ru.alexeyaleksandrov.covidcenterservice.repositories.users.RoleRepository;
 import ru.alexeyaleksandrov.covidcenterservice.security.jwt.JwtUtils;
 import ru.alexeyaleksandrov.covidcenterservice.services.TimestampConverter;
@@ -29,7 +29,7 @@ import ru.alexeyaleksandrov.covidcenterservice.services.TimestampConverter;
 @AllArgsConstructor
 public class SecurityController
 {
-    private MemberRepository memberRepository;
+    private UsersRepository usersRepository;
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
     private JwtUtils jwtUtils;
@@ -39,22 +39,22 @@ public class SecurityController
     @PostMapping("/signup")
     ResponseEntity<?> signup(@RequestBody SignUpRequest signUpRequest)  // регистрация
     {
-        if(memberRepository.existsByLogin(signUpRequest.getUsername()))
+        if(usersRepository.existsByLogin(signUpRequest.getUsername()))
         {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Choose different name!");
         }
 
         String hashed = passwordEncoder.encode(signUpRequest.getPassword());
 
-        Member member = new Member();
-        member.setLogin(signUpRequest.getUsername());
-        member.setFullName(signUpRequest.getFullName());
-        member.setPassword(hashed);
+        User user = new User();
+        user.setLogin(signUpRequest.getUsername());
+        user.setFullName(signUpRequest.getFullName());
+        user.setPassword(hashed);
 
         Role role = roleRepository.findAll().get(0);
-        member.setRole(role);
+        user.setRole(role);
 
-        memberRepository.save(member);
+        usersRepository.save(user);
         return ResponseEntity.ok("Success!");
     }
 

@@ -5,7 +5,7 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.alexeyaleksandrov.covidcenterservice.models.users.Member;
+import ru.alexeyaleksandrov.covidcenterservice.models.users.User;
 
 import java.util.*;
 
@@ -18,7 +18,7 @@ public class SecurityUserDetails implements UserDetails
     private String password;
     private Set<SimpleGrantedAuthority> roles;
 
-    public static SecurityUserDetails build (Member user)
+    public static SecurityUserDetails build (User user)
     {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));

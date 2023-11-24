@@ -2,17 +2,12 @@ package ru.alexeyaleksandrov.covidcenterservice.imports;
 
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
-import ru.alexeyaleksandrov.covidcenterservice.models.services.MedicalService;
-import ru.alexeyaleksandrov.covidcenterservice.models.users.Member;
-import ru.alexeyaleksandrov.covidcenterservice.models.users.Role;
+import ru.alexeyaleksandrov.covidcenterservice.models.users.User;
 import ru.alexeyaleksandrov.covidcenterservice.services.TimestampConverter;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class MembersImporter
@@ -23,11 +18,11 @@ public class MembersImporter
         membersImporter.importMembers();
     }
 
-    public List<Member> importMembers()
+    public List<User> importMembers()
     {
         String csvFile = "C:\\Users\\ASUS\\Downloads\\COVID-центр\\COVID-центр\\Ресурсы 1\\users.csv";
 
-        List<Member> members = new ArrayList<>();
+        List<User> users = new ArrayList<>();
 
         String line;
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile)))
@@ -49,15 +44,15 @@ public class MembersImporter
 
                 System.out.println(Arrays.toString(data));
 
-                Member member = new Member();
-                member.setId(Long.parseLong(data[0]));  // id
-                member.setFullName(data[1]);    // full_name
-                member.setLogin(data[2]);   // login
-                member.setPassword(data[3]);    // password // TODO: добавить шифрование
-                member.setIp(data[4]);  // ip
+                User user = new User();
+                user.setId(Long.parseLong(data[0]));  // id
+                user.setFullName(data[1]);    // full_name
+                user.setLogin(data[2]);   // login
+                user.setPassword(data[3]);    // password // TODO: добавить шифрование
+                user.setIp(data[4]);  // ip
 
                 long timestamp = TimestampConverter.convertMMddyyyyToTimestamp(data[5]);
-                member.setLastEnterTime(timestamp);     // last_enter
+                user.setLastEnterTime(timestamp);     // last_enter
 
                 List<Integer> codeList = new ArrayList<>();
                 try
@@ -101,7 +96,7 @@ public class MembersImporter
                 System.out.println("data = " + data[7]);
                 System.out.println(Integer.parseInt(data[7]));
 
-                members.add(member);
+                users.add(user);
             }
         }
         catch (IOException e)
@@ -110,11 +105,11 @@ public class MembersImporter
         }
 
         // Print members
-        for (Member member : members)
+        for (User user : users)
         {
-            System.out.println(member);
+            System.out.println(user);
         }
 
-        return members;
+        return users;
     }
 }

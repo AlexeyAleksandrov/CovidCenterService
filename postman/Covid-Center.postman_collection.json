@@ -108,6 +108,14 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "convertPatients",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		},
@@ -145,6 +153,18 @@
 				},
 				{
 					"name": "SignIn",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.text();\r",
+									"pm.collectionVariables.set(\"access_token\", data);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -174,12 +194,24 @@
 				},
 				{
 					"name": "SignIn Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.text();\r",
+									"pm.collectionVariables.set(\"access_token\", data);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"chacking0\",\r\n    \"password\": \"4tzqHdkqzo4\"\r\n}",
+							"raw": "{\r\n    \"username\": \"hegel73\",\r\n    \"password\": \"w138qONYPk\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -214,7 +246,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaGFja2luZzAiLCJpYXQiOjE2OTg0NDEzMTIsImV4cCI6MTY5ODQ0MTM3Mn0.WDD6-1oRvL2DuR3TQg6zisxz6L-w2gDIPKY9v9t7KzY",
+									"value": "{{access_token}}",
 									"type": "string"
 								}
 							]
@@ -235,8 +267,50 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "login_history_getById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/loginhistory/getBy?id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"loginhistory",
+								"getBy"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
+		}
+	],
+	"variable": [
+		{
+			"key": "access_token",
+			"value": ""
 		}
 	]
 }

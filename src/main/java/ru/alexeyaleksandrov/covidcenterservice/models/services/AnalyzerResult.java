@@ -2,7 +2,7 @@ package ru.alexeyaleksandrov.covidcenterservice.models.services;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import ru.alexeyaleksandrov.covidcenterservice.models.users.Member;
+import ru.alexeyaleksandrov.covidcenterservice.models.users.User;
 
 @Entity
 @Table(name = "analyzer_results")
@@ -35,8 +35,8 @@ public class AnalyzerResult
     private Boolean accepted;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id")

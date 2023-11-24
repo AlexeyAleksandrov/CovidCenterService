@@ -49,7 +49,7 @@ public class BloodServiceImport
                 analyzerResult.setCompetitionTime(bloodServicesRecord.getFinished());
                 analyzerResult.setAccepted(bloodServicesRecord.getAccepted());
                 analyzerResult.setStatus(AnalyzerResultStatus.valueOf(bloodServicesRecord.getStatus().toUpperCase()));
-                analyzerResult.setMember(null);
+                analyzerResult.setUser(null);
 
                 Analyzer analyzer = null;
                 if (analyzers.stream().noneMatch(a -> a.getName().equals(bloodServicesRecord.getAnalyzer())))
