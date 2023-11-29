@@ -19,6 +19,8 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import ru.alexeyaleksandrov.covidcenterservice.security.jwt.JwtTokenFilter;
+import ru.alexeyaleksandrov.covidcenterservice.security.services.CustomAccessDeniedHandler;
+import ru.alexeyaleksandrov.covidcenterservice.security.services.CustomAuthenticationEntryPoint;
 import ru.alexeyaleksandrov.covidcenterservice.security.services.UserService;
 
 @Configuration
@@ -61,8 +63,11 @@ public class SecurityConfiguration
                         httpSecurityCorsConfigurer.configurationSource(request ->
                                 new CorsConfiguration().applyPermitDefaultValues())
                 )   // отключаем cors (даем доступ всем приложениям напрямую)
-                .exceptionHandling(exceptions -> exceptions
-                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                .exceptionHandling(exceptions -> {
+                    exceptions.accessDeniedHandler(new CustomAccessDeniedHandler());
+                    exceptions.authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+//                    exceptions.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+                }
                 )   // при попытке подключиться туда, где нужна авторизация, будем выдавать 401 ошибку
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -70,9 +75,14 @@ public class SecurityConfiguration
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/secured/user").fullyAuthenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/api/v1/orders/**").fullyAuthenticated()
+                        .anyRequest().authenticated()
+//                        .anyRequest().permitAll()
+//                         .anyRequest().rememberMe()
+//                        .anyRequest().permitAll()
                 )   // позволяем всем пройти на страницу авторизации, но требуем авторизации для защищённой области, все остальные запросы разрешаем
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);     // добавляем фильтр для авторизации
+
         return http.build();
     }
 }

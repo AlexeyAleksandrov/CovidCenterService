@@ -6,12 +6,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ru.alexeyaleksandrov.covidcenterservice.models.users.User;
+import ru.alexeyaleksandrov.covidcenterservice.repositories.users.UsersRepository;
 
 import java.io.IOException;
 
@@ -21,6 +24,8 @@ public class JwtTokenFilter extends OncePerRequestFilter
 {
     private JwtUtils jwtUtils;
     private UserDetailsService userDetailsService;
+//    private AuthenticationManager authenticationManager;
+//    private UsersRepository usersRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException
@@ -43,18 +48,31 @@ public class JwtTokenFilter extends OncePerRequestFilter
                 {
                     username = jwtUtils.getNameFromJwt(jwt);
                 }
-                catch (ExpiredJwtException e) {}
+                catch (ExpiredJwtException e)
+                {
+                    System.out.println("ExpiredJwtException !!!");
+                }
                 if(username != null && SecurityContextHolder.getContext().getAuthentication() == null)
                 {
                     userDetails = userDetailsService.loadUserByUsername(username);  // загружаем данные о пользователе из базы
-                    auth = new UsernamePasswordAuthenticationToken(userDetails, null);     // авторизуем пользователя
+
+                    System.out.println("Authorities: " + userDetails.getAuthorities());
+                    System.out.println("user " + userDetails.getUsername());
+                    System.out.println("pass " + userDetails.getPassword());
+
+                    auth = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword());     // авторизуем пользователя
+//                    User user =
+//                    auth = new UsernamePasswordAuthenticationToken()
+
                     SecurityContextHolder.getContext().setAuthentication(auth);     // пропихиваем аутентифицированного пользователя в контекст Spring Security
+                    System.out.println("Авторизация выполнена!");
                 }
             }
         }
         catch (Exception e)
         {
-
+            System.out.println("JWT Exception!!");
+            e.printStackTrace();
         }
         filterChain.doFilter(request, response);    // дёргаем следующий фильтр, если он есть в цепочке
     }
