@@ -239,6 +239,32 @@
 			"name": "service",
 			"item": [
 				{
+					"name": "orders",
+					"item": [
+						{
+							"name": "GetById",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "medical_services",
+					"item": [
+						{
+							"name": "GetAll",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "GetUser",
 					"request": {
 						"auth": {
