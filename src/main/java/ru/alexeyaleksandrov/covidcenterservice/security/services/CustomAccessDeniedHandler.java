@@ -13,8 +13,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException
     {
         // Обработка ошибки доступа
-        System.out.println("Ошибка авторизации:");
-        accessDeniedException.printStackTrace();
+//        System.out.println("Ошибка авторизации:");
+//        accessDeniedException.printStackTrace();
         response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
     }
 }

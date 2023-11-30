@@ -21,8 +21,8 @@ public class SecurityUserDetails implements UserDetails
     public static SecurityUserDetails build (User user)
     {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-//        authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
-        authorities.add(new SimpleGrantedAuthority("USER"));
+        authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
+//        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         return new SecurityUserDetails(
                 user.getId(),
                 user.getLogin(),

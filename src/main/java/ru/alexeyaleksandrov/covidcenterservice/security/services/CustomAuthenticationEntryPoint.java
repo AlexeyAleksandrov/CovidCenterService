@@ -13,8 +13,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException
     {
         // Обработка ошибки аутентификации
-        System.out.println("Ошибка аутентификации:");
-        authException.printStackTrace();
+//        System.out.println("Ошибка аутентификации:");
+//        authException.printStackTrace();
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Access Denied");
     }
 }

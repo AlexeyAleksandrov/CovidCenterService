@@ -50,29 +50,29 @@ public class JwtTokenFilter extends OncePerRequestFilter
                 }
                 catch (ExpiredJwtException e)
                 {
-                    System.out.println("ExpiredJwtException !!!");
+//                    System.out.println("ExpiredJwtException !!!");
                 }
                 if(username != null && SecurityContextHolder.getContext().getAuthentication() == null)
                 {
                     userDetails = userDetailsService.loadUserByUsername(username);  // загружаем данные о пользователе из базы
 
-                    System.out.println("Authorities: " + userDetails.getAuthorities());
-                    System.out.println("user " + userDetails.getUsername());
-                    System.out.println("pass " + userDetails.getPassword());
+//                    System.out.println("Authorities: " + userDetails.getAuthorities());
+//                    System.out.println("user " + userDetails.getUsername());
+//                    System.out.println("pass " + userDetails.getPassword());
 
-                    auth = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword());     // авторизуем пользователя
+                    auth = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());     // авторизуем пользователя
 //                    User user =
 //                    auth = new UsernamePasswordAuthenticationToken()
 
                     SecurityContextHolder.getContext().setAuthentication(auth);     // пропихиваем аутентифицированного пользователя в контекст Spring Security
-                    System.out.println("Авторизация выполнена!");
+//                    System.out.println("Авторизация выполнена!");
                 }
             }
         }
         catch (Exception e)
         {
-            System.out.println("JWT Exception!!");
-            e.printStackTrace();
+//            System.out.println("JWT Exception!!");
+//            e.printStackTrace();
         }
         filterChain.doFilter(request, response);    // дёргаем следующий фильтр, если он есть в цепочке
     }

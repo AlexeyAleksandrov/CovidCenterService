@@ -20,7 +20,8 @@ public class OrdersController
     OrderRepository orderRepository;    // репозиторий заказов
 
     @GetMapping("/{id}")
-//    @PreAuthorize("hasRole('USER')") // требуется авторизация пользователя
+//    @PreAuthorize("hasRole('ASSISTANT_RESEARCHER')") // требуется авторизация пользователя
+//    @PreAuthorize("hasAnyAuthority('ROLE_ASSISTANT_RESEARCHER')")
     public ResponseEntity<Order> getById(@PathVariable Long id)
     {
         try
