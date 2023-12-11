@@ -1,11 +1,12 @@
 package ru.alexeyaleksandrov.covidcenterservice.models.orders;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
 import lombok.Data;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.User;
 
 import java.time.LocalDate;
 import java.util.List;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "orders")

@@ -1,7 +1,10 @@
 package ru.alexeyaleksandrov.covidcenterservice.models.users;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
+//import jakarta.persistence.*;
 import lombok.Data;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "login_history")

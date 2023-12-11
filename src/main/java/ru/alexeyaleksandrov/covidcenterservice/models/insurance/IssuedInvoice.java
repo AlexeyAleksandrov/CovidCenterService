@@ -1,9 +1,10 @@
 package ru.alexeyaleksandrov.covidcenterservice.models.insurance;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
 import lombok.Data;
 import ru.alexeyaleksandrov.covidcenterservice.models.orders.OrderService;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.User;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "issued_invoices")

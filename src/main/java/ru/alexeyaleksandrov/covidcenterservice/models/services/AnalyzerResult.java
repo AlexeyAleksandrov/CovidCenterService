@@ -1,8 +1,9 @@
 package ru.alexeyaleksandrov.covidcenterservice.models.services;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
 import lombok.Data;
 import ru.alexeyaleksandrov.covidcenterservice.models.users.User;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "analyzer_results")

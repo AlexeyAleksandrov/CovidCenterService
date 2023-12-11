@@ -1,7 +1,9 @@
 package ru.alexeyaleksandrov.covidcenterservice.models.insurance;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
 import lombok.Data;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "insurance_policy_companies")

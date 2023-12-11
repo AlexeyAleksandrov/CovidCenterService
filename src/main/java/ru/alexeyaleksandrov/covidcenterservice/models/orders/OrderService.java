@@ -1,9 +1,11 @@
 package ru.alexeyaleksandrov.covidcenterservice.models.orders;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
 import lombok.Data;
 import ru.alexeyaleksandrov.covidcenterservice.models.services.AnalyzerResult;
 import ru.alexeyaleksandrov.covidcenterservice.models.services.MedicalService;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "orders_services")

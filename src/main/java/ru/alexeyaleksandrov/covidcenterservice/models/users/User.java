@@ -1,6 +1,6 @@
 package ru.alexeyaleksandrov.covidcenterservice.models.users;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +9,7 @@ import ru.alexeyaleksandrov.covidcenterservice.models.insurance.SocialType;
 import ru.alexeyaleksandrov.covidcenterservice.models.services.MedicalService;
 
 import java.util.List;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
