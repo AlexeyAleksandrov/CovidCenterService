@@ -1,0 +1,115 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class analyzer_results {
+   analyzer_id: bigint
+   result: double precision
+   execution_time: bigint
+   competition_time: bigint
+   status: varchar(20)
+   accepted: boolean
+   user_id: bigint
+   service_id: bigint
+   id: bigint
+}
+class analyzers {
+   name: varchar(255)
+   id: bigint
+}
+class insurance_policy_companies {
+   name: varchar(255)
+   address: varchar(255)
+   individual_tax_number: bigint
+   bank_identification_code: bigint
+   policy_code: bigint
+   id: bigint
+}
+class issued_invoices {
+   company: bigint
+   value: bigint
+   status: varchar(255)
+   user_id: bigint
+   order_service_id: bigint
+   id: bigint
+}
+class login_history {
+   successful: boolean
+   enter_date: bigint
+   user_login: varchar(255)
+   id: bigint
+}
+class medical_services {
+   service_name: varchar(255)
+   price: double precision
+   deadline: integer
+   avg_deviation: double precision
+   code: bigint
+}
+class orders {
+   create_date: date
+   status: varchar(255)
+   completion_date: date
+   user_id: bigint
+   id: bigint
+}
+class orders_services {
+   order_id: bigint
+   service_id: bigint
+   analyzer_result: bigint
+   id: bigint
+}
+class permissions {
+   name: varchar(255)
+   id: bigint
+}
+class roles {
+   name: varchar(255)
+   id: bigint
+}
+class roles_permissions {
+   role_id: bigint
+   permissions_id: bigint
+}
+class users {
+   full_name: varchar(255)
+   login: varchar(50)
+   password: varchar(255)
+   ip: varchar(15)
+   role: bigint
+   last_enter_time: bigint
+   social_sec_number: bigint
+   social_type: varchar(30)
+   country: varchar(50)
+   user_agent: text
+   phone_number: varchar(20)
+   email: varchar(50)
+   insurance_policy_id: bigint
+   birthday: bigint
+   id: bigint
+}
+class users_allow_services {
+   user_id: bigint
+   allow_services_code: bigint
+}
+
+analyzer_results            -[#595959,plain]-^  analyzers                  : "analyzer_id:id"
+analyzer_results            -[#595959,plain]-^  medical_services           : "service_id:code"
+analyzer_results            -[#595959,plain]-^  users                      : "user_id:id"
+issued_invoices             -[#595959,plain]-^  insurance_policy_companies : "company:id"
+issued_invoices             -[#595959,plain]-^  orders_services            : "order_service_id:id"
+issued_invoices             -[#595959,plain]-^  users                      : "user_id:id"
+login_history               -[#595959,plain]-^  users                      : "user_login:login"
+orders                      -[#595959,plain]-^  users                      : "user_id:id"
+orders_services             -[#595959,plain]-^  analyzer_results           : "analyzer_result:id"
+orders_services             -[#595959,plain]-^  medical_services           : "service_id:code"
+orders_services             -[#595959,plain]-^  orders                     : "order_id:id"
+roles_permissions           -[#595959,plain]-^  permissions                : "permissions_id:id"
+roles_permissions           -[#595959,plain]-^  roles                      : "role_id:id"
+users                       -[#595959,plain]-^  insurance_policy_companies : "insurance_policy_id:id"
+users                       -[#595959,plain]-^  roles                      : "role:id"
+users_allow_services        -[#595959,plain]-^  medical_services           : "allow_services_code:code"
+users_allow_services        -[#595959,plain]-^  users                      : "user_id:id"
+@enduml

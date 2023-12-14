@@ -15,11 +15,11 @@ public class AnalyzerResult
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "analyzer_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "analyzer_id")
     private Analyzer analyzer;
 
-    @Column(name = "result", nullable = false)
+    @Column(name = "result")
     private Double result;
 
     @Column(name = "execution_time")
@@ -35,11 +35,11 @@ public class AnalyzerResult
     @Column(name = "accepted")
     private Boolean accepted;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "service_id")
     private MedicalService service;
 }

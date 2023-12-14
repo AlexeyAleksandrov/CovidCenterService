@@ -1,4 +1,4 @@
-package ru.alexeyaleksandrov.covidcenterservice.dto;
+package ru.alexeyaleksandrov.covidcenterservice.dto.security;
 
 import lombok.Data;
 

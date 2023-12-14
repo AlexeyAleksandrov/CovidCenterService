@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.analyzer_results</OriginalElement>
+  <nodes>
+    <node x="62.499999999999545" y="517.0">a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.orders</node>
+    <node x="348.63490437158407" y="65.06949152542376">a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.roles_permissions</node>
+    <node x="288.38490437158407" y="517.0">a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.medical_services</node>
+    <node x="457.9575808094835" y="-138.0">a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.permissions</node>
+    <node x="237.3346994535513" y="-138.0">a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.roles</node>
+    <node x="570.8183296286" y="563.447593220339">a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.analyzer_results</node>
+    <node x="1.834699453551309" y="35.0">a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.users</node>
+    <node x="-115.50000000000045" y="517.0">a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.login_history</node>
+    <node x="-27.000000000000455" y="959.3186440677961">a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.issued_invoices</node>
+    <node x="587.8183296286" y="303.06440677966094">a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.analyzers</node>
+    <node x="476.17493979809143" y="911.3288135593216">a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.orders_services</node>
+    <node x="-152.50000000000045" y="-216.9016949152542">a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.insurance_policy_companies</node>
+    <node x="234.49999999999955" y="763.7250237288134">a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.users_allow_services</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.analyzer_results" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.users" relationship="REFERENCES">
+      <point x="-55.33333333333334" y="-115.5" />
+      <point x="598.4849962952667" y="440.0" />
+      <point x="157.05177633490723" y="440.0" />
+      <point x="157.05177633490723" y="419.0" />
+      <point x="158.14966595254162" y="419.0" />
+      <point x="66.81496649899032" y="181.25758991186433" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.roles_permissions" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.permissions" relationship="REFERENCES">
+      <point x="40.0" y="-38.0" />
+      <point x="468.63490437158407" y="9.0" />
+      <point x="523.9575808094835" y="9.0" />
+      <point x="0.0" y="38.5" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.users_allow_services" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.users" relationship="REFERENCES">
+      <point x="-68.74385491525425" y="-36.17264406779657" />
+      <point x="254.7561450847453" y="751.3124881355932" />
+      <point x="255.9183457627114" y="751.3124881355932" />
+      <point x="255.9183457627114" y="491.3763523254237" />
+      <point x="136.0846994535513" y="491.3763523254237" />
+      <point x="44.75" y="181.5" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.users_allow_services" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.medical_services" relationship="REFERENCES">
+      <point x="-0.0945477966101862" y="-35.96690576271192" />
+      <point x="323.40545220338936" y="794.447593220339" />
+      <point x="323.49999999999955" y="794.447593220339" />
+      <point x="323.49999999999955" y="631.2664406779661" />
+      <point x="338.63490437158407" y="631.2664406779661" />
+      <point x="-50.25" y="71.5" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.orders_services" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.medical_services" relationship="REFERENCES">
+      <point x="0.0" y="-60.5" />
+      <point x="551.1749397980914" y="751.3124881355932" />
+      <point x="426.6510644067797" y="751.3124881355932" />
+      <point x="37.76616003519564" y="73.23247457627076" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.users" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.insurance_policy_companies" relationship="REFERENCES">
+      <point x="-44.75" y="-181.5" />
+      <point x="46.58469945355131" y="9.0" />
+      <point x="20.749999999999545" y="9.0" />
+      <point x="57.75" y="82.5" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.analyzer_results" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.medical_services" relationship="REFERENCES">
+      <point x="0.0" y="-115.5" />
+      <point x="653.8183296286" y="699.3346113084745" />
+      <point x="466.78336" y="699.3346113084745" />
+      <point x="466.78336" y="606.8204745762707" />
+      <point x="387.561166101695" y="606.8204745762707" />
+      <point x="-1.323738269889077" y="-39.38366101694953" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.issued_invoices" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.insurance_policy_companies" relationship="REFERENCES">
+      <point x="-54.038892203389764" y="-82.72372881355886" />
+      <point x="-2.038892203390219" y="894.0" />
+      <point x="-126.00000000000045" y="894.0" />
+      <point x="-126.00000000000045" y="9.0" />
+      <point x="-125.64906169491564" y="9.0" />
+      <point x="-88.64906169491519" y="85.27288135593213" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.orders" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.users" relationship="REFERENCES">
+      <point x="-26.23584135593228" y="-71.98741016949145" />
+      <point x="112.26415864406727" y="532.7093211118643" />
+      <point x="112.02209681355859" y="532.7093211118643" />
+      <point x="20.68739736000728" y="182.40124865084738" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.users" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.roles" relationship="REFERENCES">
+      <point x="44.75" y="-181.5" />
+      <point x="136.0846994535513" y="9.0" />
+      <point x="270.3346994535513" y="9.0" />
+      <point x="-33.0" y="38.5" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.issued_invoices" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.users" relationship="REFERENCES">
+      <point x="0.0" y="-82.5" />
+      <point x="51.999999999999545" y="443.0497566372881" />
+      <point x="54.094667118643656" y="443.0497566372881" />
+      <point x="-37.24003233490765" y="184.51581016949154" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.orders_services" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.analyzer_results" relationship="REFERENCES">
+      <point x="50.0" y="-60.5" />
+      <point x="601.1749397980914" y="794.447593220339" />
+      <point x="0.0" y="115.5" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.roles_permissions" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.roles" relationship="REFERENCES">
+      <point x="-40.0" y="-38.0" />
+      <point x="388.63490437158407" y="9.0" />
+      <point x="336.3346994535513" y="9.0" />
+      <point x="33.0" y="38.5" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.analyzer_results" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.analyzers" relationship="REFERENCES">
+      <point x="0.0037951171619852175" y="-114.6425084745764" />
+      <point x="653.822124745762" y="471.756" />
+      <point x="653.8183296286" y="471.756" />
+      <point x="0.0" y="38.5" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.login_history" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.users" relationship="REFERENCES">
+      <point x="0.0" y="-60.5" />
+      <point x="-37.000000000000455" y="440.0" />
+      <point x="19.19297220338933" y="440.0" />
+      <point x="-72.14172725016198" y="184.51581016949154" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.orders_services" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.orders" relationship="REFERENCES">
+      <point x="-50.0" y="-60.5" />
+      <point x="501.1749397980914" y="876.7247457627118" />
+      <point x="138.49999999999955" y="876.7247457627118" />
+      <point x="0.0" y="71.5" />
+    </edge>
+    <edge source="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.issued_invoices" target="a548ac9e-36f2-45d9-90eb-6f535a689364.TABLE:CovidCenterService.public.orders_services" relationship="REFERENCES">
+      <point x="78.2967010169491" y="4.530508474576891" />
+      <point x="130.29670101694865" y="1103.9918644067795" />
+      <point x="551.1749397980914" y="1103.9918644067795" />
+      <point x="0.0" y="60.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.6876456876456878" showDependencies="false" x="18.017948474576087" y="415.4999999999999" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
