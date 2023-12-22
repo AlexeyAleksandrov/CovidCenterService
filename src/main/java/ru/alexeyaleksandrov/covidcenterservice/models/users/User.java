@@ -48,13 +48,13 @@ public class User
 
     @Column(name = "email", length = 50)
     private String email;
-
+    
     // для пациента
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "insurance_policy_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "insurance_policy_id")
     private InsurancePolicyCompany insurancePolicy;
 
     @Column(name = "birthday")
