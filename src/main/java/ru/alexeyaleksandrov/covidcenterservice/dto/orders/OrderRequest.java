@@ -16,7 +16,7 @@ public class OrderRequest
     Long userId;
     Long orderId;
     List<Long> services;
-    OrderStatus orderStatus;
+    int orderStatus;
 
     public static OrderRequest fromOrder(Order order)
     {
@@ -24,7 +24,7 @@ public class OrderRequest
         orderRequest.setUserId(order.getUser().getId());
         orderRequest.setOrderId(order.getId());
         orderRequest.setServices(order.getServices().stream().map(s -> s.getService().getId()).toList());
-        orderRequest.setOrderStatus(order.getStatus());
+        orderRequest.setOrderStatus(order.getStatus().ordinal());
 
         return orderRequest;
     }
