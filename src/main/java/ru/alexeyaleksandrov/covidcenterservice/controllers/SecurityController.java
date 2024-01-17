@@ -24,6 +24,8 @@ import ru.alexeyaleksandrov.covidcenterservice.repositories.users.RoleRepository
 import ru.alexeyaleksandrov.covidcenterservice.security.jwt.JwtUtils;
 import ru.alexeyaleksandrov.covidcenterservice.services.TimestampConverter;
 
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/auth")
 @AllArgsConstructor
@@ -51,7 +53,10 @@ public class SecurityController
         user.setFullName(signUpRequest.getFullName());
         user.setPassword(hashed);
 
-        Role role = roleRepository.findAll().get(0);
+        Role role = roleRepository.findAll().stream()
+                .filter(r -> r.getName().equals("ROLE_NO_ROLE"))
+                .findFirst()
+                .orElseThrow();
         user.setRole(role);
 
         usersRepository.save(user);
