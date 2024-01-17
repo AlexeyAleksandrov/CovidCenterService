@@ -13,16 +13,18 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderRequest
 {
-    Long userId;
     Long orderId;
+    Long userId;
+    String userFullName;
     List<Long> services;
     int orderStatus;
 
     public static OrderRequest fromOrder(Order order)
     {
         OrderRequest orderRequest = new OrderRequest();
-        orderRequest.setUserId(order.getUser().getId());
         orderRequest.setOrderId(order.getId());
+        orderRequest.setUserId(order.getUser().getId());
+        orderRequest.setUserFullName(order.getUser().getFullName());
         orderRequest.setServices(order.getServices().stream().map(s -> s.getService().getId()).toList());
         orderRequest.setOrderStatus(order.getStatus().ordinal());
 
