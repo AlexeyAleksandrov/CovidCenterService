@@ -73,14 +73,12 @@ public class SecurityConfiguration
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )   // выключаем механизм сессий, т.к. мы используем JWT токен, вместо ID и cookie
                 .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers("/auth/**").permitAll()
-//                        .requestMatchers("/secured/user").fullyAuthenticated()
-//                        .requestMatchers("/api/v1/orders/**").hasRole("ASSISTANT_RESEARCHER")
-                        .antMatchers("/auth/**").permitAll()
-                        .antMatchers("/secured/user").authenticated()
-                        .antMatchers("/api/v1/orders/**").hasRole("ASSISTANT_RESEARCHER")
+                                .antMatchers("/auth/**").permitAll()
+                                .antMatchers("/secured/user").authenticated()
+                                .antMatchers("/api/v1/orders/**").hasRole("ASSISTANT_RESEARCHER")
+                                .antMatchers("/api/v1/roles/user/**").hasRole("ADMINISTRATOR")
 
-                        .anyRequest().authenticated()
+                                .anyRequest().authenticated()
 //                        .anyRequest().permitAll()
 //                         .anyRequest().rememberMe()
 //                        .anyRequest().permitAll()
